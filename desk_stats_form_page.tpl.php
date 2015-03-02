@@ -35,6 +35,14 @@ drupal_add_css(
     }
     .page-desk-stats #form-container select {
       margin-bottom: 15px;
+    }
+    .page-desk-stats div#edit-timestamp {
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .page-desk-stats .container-inline-date label.control-label {
+      display: block;
+      margin-top: 10px;
     }',
     'inline'
 );

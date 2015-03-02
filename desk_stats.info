@@ -1,0 +1,5 @@
+name = Desk Stats
+description = Allows staff to enter statistics pertaining to patron inquiries
+core = 7.x
+package = UNB Library
+project = desk_stats

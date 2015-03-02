@@ -1,0 +1,321 @@
+<?php
+/**
+ * @file
+ * Desk Stats module for Drupal 7.x
+ *
+ * This module allows staff to enter statistics pertaining to patron inquiries
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function desk_stats_permission() {
+  return array(
+    'enter desk stats' => array(
+      'title' => t('Enter Desk Statistics'),
+    ),
+    'view desk stats' => array(
+      'title' => t('View Desk Statistics'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function desk_stats_menu() {
+
+  $items = array();
+  $items['desk-stats'] = array(
+    'title' => 'Desk Statistics',
+    'description' => 'Form for submitting desk stats',
+    'page callback' => '_desk_stats_form_page',
+    'access arguments' => array('enter desk stats'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Custom page callback function
+ *
+ * If query string with (valid) location is present in the URL, the stats form for that location is loaded immediately.
+ */
+function _desk_stats_form_page() {
+  drupal_add_js(drupal_get_path('module', 'desk_stats') . '/desk_stats.js');
+  $variables = array(
+    'stats_form' => drupal_get_form('desk_stats_form'),
+  );
+  $get = drupal_get_query_parameters($_GET);
+  if (array_key_exists('location', $get) && array_key_exists($get['location'], _get_locations())) {
+    $location = $get['location'];
+    $variables['stats_form'] = drupal_get_form('desk_stats_form', $location);
+  }
+
+  $output = theme('desk_stats_form_page', $variables);
+  return $output;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function desk_stats_theme() {
+  return array(
+    'desk_stats_form_page' => array(
+      'template' => 'desk_stats_form_page',
+      'variables' => array('stats_form' => NULL),
+    ),
+  );
+}
+
+/**
+ * Returns valid locations.
+ *
+ * @return array
+ *   Array of location names.
+ */
+function _get_locations() {
+  $locations = array(
+    'archives' => 'Archives',
+    'eng' => 'Engineering and Computer Science',
+    'govdocs' => 'Government Documents',
+    'microforms' => 'Microforms',
+    'hilref' => 'Reference (HIL)',
+    'roamingref' => 'Roaming Reference (HIL)',
+    'sci' => 'Science and Forestry',
+    'office' => 'Office',
+  );
+  return $locations;
+}
+
+/**
+ * Implements hook_form().
+ *
+ * Form constructor for location selection and stat submission.
+ * Upon initial load, no location is selected and the stat portion of the form is not displayed (unless location query string is present in the url).
+ * Once a location is selected, the stat portion of the form is loaded via AJAX.
+ *
+ * @see _stats_submit_callback
+ *
+ * @param string $location
+ *   Location to record stats for, as per _get_locations(). Defaults to NULL.
+ */
+function desk_stats_form($form, &$form_state, $location = NULL) {
+  $locations = array_merge(array('' => 'Select a location'), _get_locations());
+  $location_default = !empty($form_state['values']['location']) ? $form_state['values']['location']: $location;
+  $location_default = $location_default != NULL ? $location_default : '';
+
+  $form['location'] = array(
+    '#type' => 'select',
+    '#title' => t('Location'),
+    '#title_display' => 'invisible',
+    '#options' => $locations,
+    '#default_value' => $location_default,
+    '#required' => TRUE,
+    '#ajax' => array(
+      'callback' => '_location_select_callback',
+      'wrapper' => 'form-container',
+    ),
+  );
+
+  // If a location has already been selected, create stats portion of form.
+  if (!empty($form_state['values']['location']) || $location != NULL) {
+
+    $location = !empty($form_state['values']['location']) ? $form_state['values']['location']: $location;
+
+    // The div wrapping this fieldset has the same ID ("form-container") as the container/placeholder below.
+    // This div replaces the placeholder during the AJAX callback, and is itself replaced during subsequent callbacks.
+    $form['stats_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Desk Statistics for ' . _get_locations()[$location],
+      '#prefix' => '<div id="form-container">',
+      '#suffix' => '</div>',
+    );
+
+    $responder_class = $location == 'office' ? 'show' : 'hide';
+    $responder_options = array(
+      'Research Help Desk' => 'Research Help Desk',
+      'Marc Bragdon' => 'Marc Bragdon',
+      'Barry Cull' => 'Barry Cull',
+      'Sue Fisher' => 'Sue Fisher',
+      'Richelle Witherspoon' => 'Richelle Witherspoon',
+      'Aggie Sliwka' => 'Aggie Sliwka',
+      'Alicia Mclaughlin' => 'Alicia Mclaughlin',
+      'Patricia Simmons' => 'Patricia Simmons',
+      'Linda Roulston' => 'Linda Roulston',
+      'Joanne Smyth' => 'Joanne Smyth',
+      'Leanne Wells' => 'Leanne Wells',
+    );
+    $form['stats_fieldset']['responder'] = array(
+      '#type' => 'select',
+      '#title' => t('Responder'),
+      '#options' => $responder_options,
+      '#default_value' => 'Research Help Desk',
+      '#required' => TRUE,
+      '#prefix' => '<div class="' . $responder_class . '">',
+      '#suffix' => '</div>',
+    );
+
+    $inquiry_options = array(
+      'Quick Information' => 'Quick Information',
+      'Directional' => 'Directional',
+      'Reference' => 'Reference',
+      'Complex Reference 5-15' => 'Complex Reference 5-15',
+      'Complex Reference 15+' => 'Complex Reference 15+',
+      'Expert Reference' => 'Expert Reference',
+      'Technical & Systems' => 'Technical & Systems',
+      'Administrative' => 'Administrative',
+    );
+    $form['stats_fieldset']['inquiry'] = array(
+      '#type' => 'radios',
+      '#title' => t('Inquiry Type'),
+      '#options' => $inquiry_options,
+      '#required' => TRUE,
+    );
+
+    $patron_options = array(
+      'Don\'t Know' => 'Don\'t Know',
+      'Student' => 'Student',
+      'Faculty' => 'Faculty',
+      'Staff' => 'Staff',
+      'Community User' => 'Community User',
+    );
+    $form['stats_fieldset']['patron'] = array(
+      '#type' => 'radios',
+      '#title' => t('Patron'),
+      '#options' => $patron_options,
+      '#default_value' => 'Don\'t Know',
+      '#required' => TRUE,
+    );
+
+    $method_options = array(
+      'In Person' => 'In Person',
+      'Phone' => 'Phone',
+      'Email' => 'Email',
+      'Chat / IM' => 'Chat / IM',
+    );
+    $form['stats_fieldset']['method'] = array(
+      '#type' => 'radios',
+      '#title' => t('Method'),
+      '#options' => $method_options,
+      '#default_value' => 'In Person',
+      '#required' => TRUE,
+    );
+
+    $referrals_options = array(
+      'No referral' => 'No referral',
+      'Some aspects referred' => 'Some aspects referred',
+      'Whole inquiry referred' => 'Whole inquiry referred',
+    );
+    $form['stats_fieldset']['referrals'] = array(
+      '#type' => 'radios',
+      '#title' => t('Referrals'),
+      '#options' => $referrals_options,
+      '#default_value' => 'No referral',
+      '#required' => TRUE,
+    );
+
+    $form['stats_fieldset']['override'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Override submission time?'),
+    );
+
+    $form['stats_fieldset']['timestamp'] = array(
+      '#type' => 'date_popup',
+      '#title' => t('Inquiry Time'),
+      '#date_format' => 'Y-m-d h:i A',
+      '#required' => TRUE,
+      '#prefix' => '<div class="timestamp hide">',
+      '#suffix' => '</div>',
+    );
+
+    $form['stats_fieldset']['submit'] = array(
+      '#type' => 'submit',
+      '#name' => 'stats-submit',
+      '#value' => 'Record',
+      '#id' => 'stats-submit',
+      '#submit' => array('stats_submit'),
+      '#ajax' => array(
+        'callback' => '_stats_submit_callback',
+      ),
+    );
+  }
+  else {
+    // Container that acts as a placeholder for the ticket portion of the form
+    // until the ticket portion is loaded by the AJAX callback _topic_select_callback.
+    // This container is removed and replaced during the above-noted callback.
+    $form['form_container'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'id' => 'form-container',
+      ),
+    );
+  }
+
+  return $form;
+}
+
+
+/**
+ * AJAX callback for desk_stats_form() when location is selected.
+ *
+ * Valid locations will load the stats portion of the form.
+ */
+function _location_select_callback($form, &$form_state) {
+  $location = $form_state['values']['location'];
+  $commands = _refresh_messages();
+
+  if (array_key_exists($location, _get_locations())) {
+    $new_form_render = drupal_render($form['stats_fieldset']);
+    $commands[] = ajax_command_replace('#form-container', $new_form_render);
+  }
+  else {
+    $new_form_render = drupal_render($form['form_container']);
+    $commands[] = ajax_command_replace('#form-container', $new_form_render);
+  }
+  $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
+  $commands[] = ajax_command_invoke(NULL, 'resetResponder', array($form_state['values']['location']));
+
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+/**
+ * AJAX callback for desk_stats_form() when stats are submitted.
+ *
+ * Handles form submission and refreshes the messages via AJAX
+ *
+ */
+function _stats_submit_callback($form, &$form_state) {
+  $commands = array();
+  if (!form_get_errors()) {
+    drupal_set_message('Results recorded');
+    $selectDefaults = array (
+      'responder' => $form['stats_fieldset']['responder']['#default_value'] ? $form['stats_fieldset']['responder']['#default_value'] : '',
+    );
+    $radioDefaults = array (
+      'inquiry' => $form['stats_fieldset']['inquiry']['#default_value'] ? $form['stats_fieldset']['inquiry']['#default_value'] : '',
+      'patron' => $form['stats_fieldset']['patron']['#default_value'] ? $form['stats_fieldset']['patron']['#default_value'] : '',
+      'method' => $form['stats_fieldset']['method']['#default_value'] ? $form['stats_fieldset']['method']['#default_value'] : '',
+      'referrals' => $form['stats_fieldset']['referrals']['#default_value'] ? $form['stats_fieldset']['referrals']['#default_value'] : '',
+    );
+    $textfieldDefaults = array (
+      'timestamp[date]' => '',
+      'timestamp[time]' => '',
+    );
+    $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($selectDefaults), json_encode($radioDefaults), json_encode($textfieldDefaults)));
+  }
+  $commands = array_merge($commands, _refresh_messages());
+  return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+function stats_submit($form, &$form_state) {
+}
+
+/**
+ * Clears previously displayed messages, displays new messages, and resets messages queue.
+ */
+function _desk_stats_refresh_messages($commands = array()) {
+  $commands[] = ajax_command_remove('div#messages');
+  $commands[] = ajax_command_before('div.region-content', '<div id="messages"><div class="section clearfix">' . theme('status_messages') . "</div></div>");
+  return $commands;
+}

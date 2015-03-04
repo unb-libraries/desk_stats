@@ -368,7 +368,9 @@ function _stats_submit_callback($form, &$form_state) {
       'timestamp[time]' => '',
     );
     $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($radioDefaults), json_encode($textfieldDefaults)));
+
   }
+  $commands[] = ajax_command_invoke(NULL, 'fadeSuccess', array());
   $commands = array_merge($commands, _refresh_messages());
   return array('#type' => 'ajax', '#commands' => $commands);
 }

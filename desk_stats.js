@@ -56,3 +56,11 @@
 
   };
 })(jQuery);
+(function(jQuery) {
+  jQuery.fn.fadeSuccess = function() {
+    setTimeout(function() {
+      jQuery('.alert-success').fadeOut('slow');
+    },
+    5000);
+  };
+})(jQuery);

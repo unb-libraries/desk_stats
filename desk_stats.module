@@ -43,6 +43,7 @@ function desk_stats_menu() {
  */
 function _desk_stats_form_page() {
   drupal_add_js(drupal_get_path('module', 'desk_stats') . '/desk_stats.js');
+  drupal_add_css(drupal_get_path('module', 'desk_stats') . '/desk_stats.css');
   $variables = array(
     'stats_form' => drupal_get_form('desk_stats_form'),
   );
@@ -132,52 +133,57 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#suffix' => '</div>',
     );
 
-    $responder_class = $location == 'office' ? 'show' : 'hide';
-    $responder_options = array(
-      'Research Help Desk' => 'Research Help Desk',
-      'Marc Bragdon' => 'Marc Bragdon',
-      'Barry Cull' => 'Barry Cull',
-      'Sue Fisher' => 'Sue Fisher',
-      'Richelle Witherspoon' => 'Richelle Witherspoon',
-      'Aggie Sliwka' => 'Aggie Sliwka',
-      'Alicia Mclaughlin' => 'Alicia Mclaughlin',
-      'Patricia Simmons' => 'Patricia Simmons',
-      'Linda Roulston' => 'Linda Roulston',
-      'Joanne Smyth' => 'Joanne Smyth',
-      'Leanne Wells' => 'Leanne Wells',
-    );
-    $form['stats_fieldset']['responder'] = array(
-      '#type' => 'select',
-      '#title' => t('Responder'),
-      '#options' => $responder_options,
-      '#default_value' => 'Research Help Desk',
-      '#required' => TRUE,
-      '#prefix' => '<div class="' . $responder_class . '">',
-      '#suffix' => '</div>',
-    );
+    if($location =='office') {
+      $responder_options = array(
+        'Marc Bragdon' => 'Marc Bragdon',
+        'Barry Cull' => 'Barry Cull',
+        'Sue Fisher' => 'Sue Fisher',
+        'Richelle Witherspoon' => 'Richelle Witherspoon',
+        'Aggie Sliwka' => 'Aggie Sliwka',
+        'Alicia Mclaughlin' => 'Alicia Mclaughlin',
+        'Patricia Simmons' => 'Patricia Simmons',
+        'Linda Roulston' => 'Linda Roulston',
+        'Joanne Smyth' => 'Joanne Smyth',
+        'Leanne Wells' => 'Leanne Wells',
+      );
+      $form['stats_fieldset']['responder'] = array(
+        '#type' => 'select',
+        '#title' => t('Responder'),
+        '#options' => $responder_options,
+        '#required' => TRUE,
+      );
+    }
+    else {
+      $form['stats_fieldset']['responder'] = array(
+        '#type' => 'hidden',
+        '#value' => 'Research Help Desk',
+        '#required' => TRUE,
+      );
+    }
 
     $inquiry_options = array(
       'Quick Information' => 'Quick Information',
       'Directional' => 'Directional',
-      'Reference' => 'Reference',
+      'Technical & Systems' => 'Technical & Systems',
+      'Administrative' => 'Administrative',
+      'Basic Reference' => 'Basic Reference',
       'Complex Reference 5-15' => 'Complex Reference 5-15',
       'Complex Reference 15+' => 'Complex Reference 15+',
       'Expert Reference' => 'Expert Reference',
-      'Technical & Systems' => 'Technical & Systems',
-      'Administrative' => 'Administrative',
     );
     $form['stats_fieldset']['inquiry'] = array(
-      '#type' => 'radios',
+      '#type' => 'checkboxes',
       '#title' => t('Inquiry Type'),
       '#options' => $inquiry_options,
       '#required' => TRUE,
+      '#prefix' => '<div class="inquiry">',
+      '#suffix' => '</div>',
     );
 
     $patron_options = array(
       'Don\'t Know' => 'Don\'t Know',
       'Student' => 'Student',
-      'Faculty' => 'Faculty',
-      'Staff' => 'Staff',
+      'Faculty/Staff' => 'Faculty/Staff',
       'Community User' => 'Community User',
     );
     $form['stats_fieldset']['patron'] = array(
@@ -186,6 +192,56 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#options' => $patron_options,
       '#default_value' => 'Don\'t Know',
       '#required' => TRUE,
+    );
+
+    $student_type_options = array(
+      'Don\'t Know' => 'Don\'t Know',
+      'UNB' => 'UNB',
+      'STU' => 'STU',
+      'NBCC' => 'NBCC',
+    );
+    $form['stats_fieldset']['student_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Student Type'),
+      '#title_display' => 'invisible',
+      '#options' => $student_type_options,
+      '#default_value' => 'Don\'t Know',
+      '#required' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="patron"]' => array('value' => 'Student'),
+        ),
+        'enabled' => array(
+          ':input[name="patron"]' => array('value' => 'Student'),
+        ),
+      ),
+      '#prefix' => '<div class="student-type">',
+      '#suffix' => '</div>',
+    );
+
+    $staff_type_options = array(
+      'Don\'t Know' => 'Don\'t Know',
+      'UNB' => 'UNB',
+      'STU' => 'STU',
+      'NBCC' => 'NBCC',
+    );
+    $form['stats_fieldset']['staff_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Faculty/Staff Type'),
+      '#title_display' => 'invisible',
+      '#options' => $staff_type_options,
+      '#default_value' => 'Don\'t Know',
+      '#required' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="patron"]' => array('value' => 'Faculty/Staff'),
+        ),
+        'enabled' => array(
+          ':input[name="patron"]' => array('value' => 'Faculty/Staff'),
+        ),
+      ),
+      '#prefix' => '<div class="staff-type">',
+      '#suffix' => '</div>',
     );
 
     $method_options = array(
@@ -223,9 +279,21 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     $form['stats_fieldset']['timestamp'] = array(
       '#type' => 'date_popup',
       '#title' => t('Inquiry Time'),
+      '#title_display' => 'invisible',
       '#date_format' => 'Y-m-d h:i A',
-      '#required' => TRUE,
-      '#prefix' => '<div class="timestamp hide">',
+      '#states' => array(
+        'visible' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+        'required' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+        'enabled' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+      ),
+      '#element_validate' => array('_validate_timestamp'),
+      '#prefix' => '<div class="timestamp">',
       '#suffix' => '</div>',
     );
 
@@ -234,7 +302,6 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#name' => 'stats-submit',
       '#value' => 'Record',
       '#id' => 'stats-submit',
-      '#submit' => array('stats_submit'),
       '#ajax' => array(
         'callback' => '_stats_submit_callback',
       ),
@@ -274,7 +341,6 @@ function _location_select_callback($form, &$form_state) {
     $commands[] = ajax_command_replace('#form-container', $new_form_render);
   }
   $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
-  $commands[] = ajax_command_invoke(NULL, 'resetResponder', array($form_state['values']['location']));
 
   return array('#type' => 'ajax', '#commands' => $commands);
 }
@@ -289,11 +355,10 @@ function _stats_submit_callback($form, &$form_state) {
   $commands = array();
   if (!form_get_errors()) {
     drupal_set_message('Results recorded');
-    $selectDefaults = array (
-      'responder' => $form['stats_fieldset']['responder']['#default_value'] ? $form['stats_fieldset']['responder']['#default_value'] : '',
-    );
     $radioDefaults = array (
       'inquiry' => $form['stats_fieldset']['inquiry']['#default_value'] ? $form['stats_fieldset']['inquiry']['#default_value'] : '',
+      'student_type' => $form['stats_fieldset']['student_type']['#default_value'] ? $form['stats_fieldset']['student_type']['#default_value'] : '',
+      'staff_type' => $form['stats_fieldset']['staff_type']['#default_value'] ? $form['stats_fieldset']['staff_type']['#default_value'] : '',
       'patron' => $form['stats_fieldset']['patron']['#default_value'] ? $form['stats_fieldset']['patron']['#default_value'] : '',
       'method' => $form['stats_fieldset']['method']['#default_value'] ? $form['stats_fieldset']['method']['#default_value'] : '',
       'referrals' => $form['stats_fieldset']['referrals']['#default_value'] ? $form['stats_fieldset']['referrals']['#default_value'] : '',
@@ -302,13 +367,24 @@ function _stats_submit_callback($form, &$form_state) {
       'timestamp[date]' => '',
       'timestamp[time]' => '',
     );
-    $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($selectDefaults), json_encode($radioDefaults), json_encode($textfieldDefaults)));
+    $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($radioDefaults), json_encode($textfieldDefaults)));
   }
   $commands = array_merge($commands, _refresh_messages());
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
-function stats_submit($form, &$form_state) {
+/**
+ * Element validation for 'timestamp' in desk_stats_form().
+ *
+ * Throws error if override time is selected and timestamp is empty.
+ *
+ */
+function _validate_timestamp($element, &$form_state, $form) {
+  $timestamp = $element['#value'];
+  $override = $form_state['values']['override'];
+  if ($override == 1 && ($timestamp['date'] == '' || $timestamp['time'] == '')) {
+    form_error($element, t('Please enter the inquiry date and time'));
+  }
 }
 
 /**

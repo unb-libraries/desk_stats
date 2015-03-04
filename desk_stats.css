@@ -1,0 +1,58 @@
+#content h2 {
+  margin-top: 0;
+}
+
+.page-desk-stats .tabs {
+  margin: 0;
+}
+
+.page-desk-stats form p {
+  margin: 1em 0 0 0;
+}
+
+.page-desk-stats form .container-inline {
+  margin-bottom: 10px;
+}
+
+.page-desk-stats form input.form-radio {
+  margin-left: 20px;
+  float: none;
+}
+
+.page-desk-stats form .form-type-radio label {
+  margin-left: 5px;
+}
+
+.page-desk-stats .inquiry .form-group:last-child {
+  margin-bottom: 15px;
+}
+
+.page-desk-stats .form-item-location {
+  display: inline-block;
+}
+
+.page-desk-stats select#edit-location {
+  display: inline-block;
+}
+
+.page-desk-stats .subgroup {
+  margin-left: 20px !important;
+}
+
+.page-desk-stats p.subgroup-label {
+  margin: -4px 0 -5px 20px;
+}
+
+.page-desk-stats #form-container select {
+  margin-bottom: 15px;
+}
+
+.page-desk-stats div#edit-timestamp {
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.page-desk-stats .student-type .form-group, .page-desk-stats .staff-type .form-group {
+  margin-bottom: 20px;
+  margin-top: 5px;
+}

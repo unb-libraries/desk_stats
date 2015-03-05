@@ -47,7 +47,7 @@
   margin-bottom: 15px;
 }
 
-.page-desk-stats div#edit-timestamp {
+.page-desk-stats .container-inline-date .date-padding {
   padding: 0;
   margin-bottom: 20px;
 }
@@ -55,4 +55,8 @@
 .page-desk-stats .student-type .form-group, .page-desk-stats .staff-type .form-group {
   margin-bottom: 20px;
   margin-top: 5px;
+}
+
+button.save-location {
+  margin-left: 20px;
 }

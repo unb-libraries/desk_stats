@@ -119,6 +119,16 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     ),
   );
 
+  $form['save_location'] = array(
+    '#type' => 'button',
+    '#name' => 'save-location',
+    '#value' => 'Save as my default location',
+    '#ajax' => array(
+      'callback' => '_save_location_callback',
+    ),
+    '#attributes' => array('class' => array('hide save-location')),
+  );
+
   // If a location has already been selected, create stats portion of form.
   if (!empty($form_state['values']['location']) || $location != NULL) {
 
@@ -270,6 +280,18 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#default_value' => 'No referral',
       '#required' => TRUE,
     );
+    $form['stats_fieldset']['referral_details'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Referral Details'),
+      '#states' => array(
+        'invisible' => array(
+          ':input[name="referrals"]' => array('value' => 'No referral'),
+        ),
+        'disabled' => array(
+          ':input[name="referrals"]' => array('value' => 'No referral'),
+        ),
+      ),
+    );
 
     $form['stats_fieldset']['override'] = array(
       '#type' => 'checkbox',
@@ -305,6 +327,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#ajax' => array(
         'callback' => '_stats_submit_callback',
       ),
+      '#attributes' => array('class' => array('btn-primary')),
     );
   }
   else {
@@ -340,9 +363,27 @@ function _location_select_callback($form, &$form_state) {
     $new_form_render = drupal_render($form['form_container']);
     $commands[] = ajax_command_replace('#form-container', $new_form_render);
   }
+
+  if ($location == '') {
+    $commands[] = ajax_command_invoke(NULL, 'hideSaveLocationButton', array());
+  }
+  else {
+    $commands[] = ajax_command_invoke(NULL, 'showSaveLocationButton', array());
+  }
+
   $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
 
   return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+/**
+ * AJAX callback for desk_stats_form() when location save button is clicked.
+ *
+ * Active location will be saved as user's preference.
+ */
+function _save_location_callback($form, &$form_state) {
+
+
 }
 
 /**

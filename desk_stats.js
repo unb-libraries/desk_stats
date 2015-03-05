@@ -56,11 +56,24 @@
 
   };
 })(jQuery);
+
 (function(jQuery) {
   jQuery.fn.fadeSuccess = function() {
     setTimeout(function() {
       jQuery('.alert-success').fadeOut('slow');
     },
     5000);
+  };
+})(jQuery);
+
+(function(jQuery) {
+  jQuery.fn.showSaveLocationButton = function() {
+    jQuery('.save-location').removeClass('hide');
+  };
+})(jQuery);
+
+(function(jQuery) {
+  jQuery.fn.hideSaveLocationButton = function() {
+    jQuery('.save-location').addClass('hide');
   };
 })(jQuery);

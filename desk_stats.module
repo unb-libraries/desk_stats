@@ -382,8 +382,16 @@ function _location_select_callback($form, &$form_state) {
  * Active location will be saved as user's preference.
  */
 function _save_location_callback($form, &$form_state) {
-
-
+  // clear validation errors from save location callback
+  // (when "save location" button is pressed, whole form is validated, which is unnecessary at this point)
+  drupal_get_messages();
+  $location = $form['location']['#value'];
+  if (!array_key_exists($location, _get_locations())) {
+    form_error($element, t('Please select a valid location'));
+  }
+  else {
+    //save location
+  }
 }
 
 /**

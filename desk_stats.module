@@ -190,6 +190,11 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#suffix' => '</div>',
     );
 
+    $form['stats_fieldset']['inquiry_notes'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Inquiry Notes'),
+    );
+
     $patron_options = array(
       'Don\'t Know' => 'Don\'t Know',
       'Student' => 'Student',
@@ -280,6 +285,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#default_value' => 'No referral',
       '#required' => TRUE,
     );
+
     $form['stats_fieldset']['referral_details'] = array(
       '#type' => 'textfield',
       '#title' => t('Referral Details'),

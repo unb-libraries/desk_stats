@@ -199,7 +199,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       'Don\'t Know' => 'Don\'t Know',
       'Student' => 'Student',
       'Faculty/Staff' => 'Faculty/Staff',
-      'Community User' => 'Community User',
+      'External User' => 'External User',
     );
     $form['stats_fieldset']['patron'] = array(
       '#type' => 'radios',
@@ -397,6 +397,7 @@ function _save_location_callback($form, &$form_state) {
   }
   else {
     //save location
+    drupal_set_message('Your selection has been saved');
   }
 }
 

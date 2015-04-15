@@ -1,10 +1,8 @@
 (function(jQuery) {
   jQuery.fn.setUpForm = function() {
-    // add radio category label
-    jQuery('input[value="Basic Reference"]').parent('label').parent('div').before('<p class="subgroup-label">Reference</p>');
-
-    // add class to checkboxes in subgroup
-    jQuery('.inquiry input[type="checkbox"]').parent('label').parent('div').slice(4,8).addClass('subgroup');
+    // find "Reference" named checkbox grouping and mark up accessibly
+    jQuery('input[name*="Reference"]').parents('div.form-type-checkbox').wrapAll('<fieldset class="subgroup"></div>');
+    jQuery('input[name*="Reference"]').parents('fieldset.subgroup').prepend('<legend>Reference</legend>');
 
     // move student and faculty/staff types to beneath the appropriate radio button
     jQuery('.student-type').detach().insertAfter(jQuery('input[name="patron"][value="Student"]').parent('label'));

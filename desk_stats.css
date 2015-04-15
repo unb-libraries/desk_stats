@@ -1,3 +1,14 @@
+/* bootstrap tweaks */
+.bootstrap-anchors-processed .page-desk-stats .subgroup { margin-top: -4px; }
+.subgroup legend + div { margin-top: 0.5em; }
+
+/* core theme style overrides: legend */
+.subgroup legend {
+  font-size: inherit;
+  margin-bottom: 0;
+  position: relative;
+}
+
 #content h2 {
   margin-top: 0;
 }
@@ -36,11 +47,7 @@
 }
 
 .page-desk-stats .subgroup {
-  margin-left: 20px !important;
-}
-
-.page-desk-stats p.subgroup-label {
-  margin: -4px 0 -5px 20px;
+  margin-left: 20px;
 }
 
 .page-desk-stats #form-container select {

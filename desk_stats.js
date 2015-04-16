@@ -7,6 +7,7 @@
     // move student and faculty/staff types to beneath the appropriate radio button
     jQuery('.student-type').detach().insertAfter(jQuery('input[name="patron"][value="Student"]').parent('label'));
     jQuery('.staff-type').detach().insertAfter(jQuery('input[name="patron"][value="Faculty/Staff"]').parent('label'));
+    jQuery('.external-type').detach().insertAfter(jQuery('input[name="patron"][value="External User"]').parent('label'));
 
     // remove extra asterisks added by form api states
     jQuery('input[name="override"]').click(function() {

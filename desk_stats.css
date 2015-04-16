@@ -64,6 +64,23 @@
   margin-top: 5px;
 }
 
-button.save-location {
+.page-desk-stats button.save-location {
   margin-left: 20px;
+}
+
+.page-desk-stats div.key {
+  width: 35%;
+  float: right;
+  margin-left: 20px;
+  background: #f0f0f0;
+  padding: 10px;
+}
+
+.page-desk-stats div.key h2 {
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.page-desk-stats div.key dd {
+  margin-bottom: 10px;
 }

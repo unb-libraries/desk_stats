@@ -139,7 +139,29 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     $form['stats_fieldset'] = array(
       '#type' => 'fieldset',
       '#title' => 'Desk Statistics for ' . _get_locations()[$location],
-      '#prefix' => '<div id="form-container">',
+      '#prefix' => '
+      <div class="key">
+        <h2>Stats collector key:</h2>
+        <dl>
+          <dt>Quick information:</dt>
+          <dd>Simple and specific questions, typically answered without using reference tools.</dd>
+          <dt>Directional:</dt>
+          <dd>Locational information, providing directions to campus locations, either inside or outside the library.</dd>
+          <dt>Technical and Systems:</dt>
+          <dd>Questions related to equipment (printers, scanners, PCs, etc.) or electronic access (off campus access, online resources, etc.)</dd>
+          <dt>Administrative:</dt>
+          <dd>Library operational inquiries (borrowing policy, placing holds, hours of operation, etc.)</dd>
+          <dt>Basic Reference:</dt>
+          <dd>Inquiries that can be answered fairly quickly (a few minutes), using library sources (website, reference tool, database, handout, etc.)</dd>
+          <dt>Complex Reference:</dt>
+          <dd>In-depth inquiries, requiring more time and perhaps teaching patrons how to use library resources. Indicate whether the transaction took more or fewer than  15 minutes.</dd>
+          <dt>Expert Reference:</dt>
+          <dd>Highly specific or challenging questions, usually answered by a liaison librarian or subject specialist.</dd>
+          <dt>Inquiry Notes:</dt>
+          <dd>Use to indicate information of interest to your unit.</dd>
+        </dl>
+      </div>
+      <div id="form-container">',
       '#suffix' => '</div>',
     );
 
@@ -211,7 +233,8 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
 
     $student_type_options = array(
       'Don\'t Know' => 'Don\'t Know',
-      'UNB' => 'UNB',
+      'UNB Undergraduate' => 'UNB Undergraduate',
+      'UNB Graduate' => 'UNB Graduate',
       'STU' => 'STU',
       'NBCC' => 'NBCC',
     );
@@ -256,6 +279,31 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
         ),
       ),
       '#prefix' => '<div class="staff-type">',
+      '#suffix' => '</div>',
+    );
+
+    $external_type_options = array(
+      'Don\'t Know' => 'Don\'t Know',
+      'Researcher' => 'Researcher',
+      'General Public' => 'General Public',
+    );
+
+    $form['stats_fieldset']['external_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('External User Type'),
+      '#title_display' => 'invisible',
+      '#options' => $external_type_options,
+      '#default_value' => 'Don\'t Know',
+      '#required' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="patron"]' => array('value' => 'External User'),
+        ),
+        'enabled' => array(
+          ':input[name="patron"]' => array('value' => 'External User'),
+        ),
+      ),
+      '#prefix' => '<div class="external-type">',
       '#suffix' => '</div>',
     );
 

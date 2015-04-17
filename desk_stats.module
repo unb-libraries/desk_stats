@@ -140,29 +140,32 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#type' => 'fieldset',
       '#title' => 'Desk Statistics for ' . _get_locations()[$location],
       '#prefix' => '
-      <div class="key">
-        <h2>Stats collector key:</h2>
-        <dl>
-          <dt>Quick information:</dt>
-          <dd>Simple and specific questions, typically answered without using reference tools.</dd>
-          <dt>Directional:</dt>
-          <dd>Locational information, providing directions to campus locations, either inside or outside the library.</dd>
-          <dt>Technical and Systems:</dt>
-          <dd>Questions related to equipment (printers, scanners, PCs, etc.) or electronic access (off campus access, online resources, etc.)</dd>
-          <dt>Administrative:</dt>
-          <dd>Library operational inquiries (borrowing policy, placing holds, hours of operation, etc.)</dd>
-          <dt>Basic Reference:</dt>
-          <dd>Inquiries that can be answered fairly quickly (a few minutes), using library sources (website, reference tool, database, handout, etc.)</dd>
-          <dt>Complex Reference:</dt>
-          <dd>In-depth inquiries, requiring more time and perhaps teaching patrons how to use library resources. Indicate whether the transaction took more or fewer than  15 minutes.</dd>
-          <dt>Expert Reference:</dt>
-          <dd>Highly specific or challenging questions, usually answered by a liaison librarian or subject specialist.</dd>
-          <dt>Inquiry Notes:</dt>
-          <dd>Use to indicate information of interest to your unit.</dd>
-        </dl>
-      </div>
-      <div id="form-container">',
-      '#suffix' => '</div>',
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-7">
+          <div id="form-container">',
+      '#suffix' => '</div></div>
+                <div class="key col-md-5">
+            <h2>Stats collector key:</h2>
+            <dl>
+              <dt>Quick information:</dt>
+              <dd>Simple and specific questions, typically answered without using reference tools.</dd>
+              <dt>Directional:</dt>
+              <dd>Locational information, providing directions to campus locations, either inside or outside the library.</dd>
+              <dt>Technical and Systems:</dt>
+              <dd>Questions related to equipment (printers, scanners, PCs, etc.) or electronic access (off campus access, online resources, etc.)</dd>
+              <dt>Administrative:</dt>
+              <dd>Library operational inquiries (borrowing policy, placing holds, hours of operation, etc.)</dd>
+              <dt>Basic Reference:</dt>
+              <dd>Inquiries that can be answered fairly quickly (a few minutes), using library sources (website, reference tool, database, handout, etc.)</dd>
+              <dt>Complex Reference:</dt>
+              <dd>In-depth inquiries, requiring more time and perhaps teaching patrons how to use library resources. Indicate whether the transaction took more or fewer than  15 minutes.</dd>
+              <dt>Expert Reference:</dt>
+              <dd>Highly specific or challenging questions, usually answered by a liaison librarian or subject specialist.</dd>
+              <dt>Inquiry Notes:</dt>
+              <dd>Use to indicate information of interest to your unit.</dd>
+            </dl>
+          </div></div></div>',
     );
 
     if($location =='office') {

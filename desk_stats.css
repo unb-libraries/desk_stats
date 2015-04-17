@@ -69,9 +69,6 @@
 }
 
 .page-desk-stats div.key {
-  width: 35%;
-  float: right;
-  margin-left: 20px;
   background: #f0f0f0;
   padding: 10px;
 }
@@ -83,4 +80,8 @@
 
 .page-desk-stats div.key dd {
   margin-bottom: 10px;
+}
+
+.page-desk-stats div#form-container {
+  margin-bottom: 20px;
 }

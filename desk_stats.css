@@ -85,3 +85,18 @@
 .page-desk-stats div#form-container {
   margin-bottom: 20px;
 }
+
+.page-desk-stats input#stats-submit {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  background-image: none;
+}
+
+.page-desk-stats div.time .form-item {
+  margin-top: 0;
+}
+
+.page-desk-stats #edit-date, .page-desk-stats #edit-date input, .page-desk-stats .container-inline-date .form-item {
+  width: 100%;
+}

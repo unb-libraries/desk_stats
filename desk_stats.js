@@ -5,13 +5,13 @@
     jQuery('input[name*="Reference"]').parents('fieldset.subgroup').prepend('<legend>Reference</legend>');
 
     // move student and faculty/staff types to beneath the appropriate radio button
-    jQuery('.student-type').detach().insertAfter(jQuery('input[name="patron"][value="Student"]').parent('label'));
-    jQuery('.staff-type').detach().insertAfter(jQuery('input[name="patron"][value="Faculty/Staff"]').parent('label'));
-    jQuery('.external-type').detach().insertAfter(jQuery('input[name="patron"][value="External User"]').parent('label'));
+    jQuery('.student-type').detach().insertAfter(jQuery('input[name="patron"][value="Student"]').next('label'));
+    jQuery('.staff-type').detach().insertAfter(jQuery('input[name="patron"][value="Faculty/Staff"]').next('label'));
+    jQuery('.external-type').detach().insertAfter(jQuery('input[name="patron"][value="External User"]').next('label'));
 
     // remove extra asterisks added by form api states
-    jQuery('input[name="override"]').click(function() {
-      var labels = jQuery('.container-inline-date').find('label');
+    jQuery('input[name="override"], select').click(function() {
+      var labels = jQuery('div.date, div.time').find('label');
       for (var i=0; i<labels.length; i++) {
         jQuery(labels[i]).find('span.form-required').slice(1).remove();
       }
@@ -20,9 +20,8 @@
 })(jQuery);
 
 (function(jQuery) {
-  jQuery.fn.resetFields = function(radioDefaults, textfieldDefaults) {
+  jQuery.fn.resetFields = function(radioDefaults) {
     radioDefaults = JSON.parse(radioDefaults);
-    textfieldDefaults = JSON.parse(textfieldDefaults);
 
     for (var field in radioDefaults) {
       if(radioDefaults[field] == '') {
@@ -44,10 +43,6 @@
     }
 
     jQuery('.inquiry input[type="checkbox"]').prop('checked', false);
-
-    for (var field in textfieldDefaults) {
-      jQuery('input[name="' + field + '"]').val(textfieldDefaults[field]);
-    }
 
     if (jQuery('input[name="override"]').prop('checked')) {
       jQuery('input[name="override"]').click();

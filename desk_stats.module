@@ -102,6 +102,7 @@ function _get_locations() {
  *   Location to record stats for, as per _get_locations(). Defaults to NULL.
  */
 function desk_stats_form($form, &$form_state, $location = NULL) {
+
   $locations = array_merge(array('' => 'Select a location'), _get_locations());
   $location_default = !empty($form_state['values']['location']) ? $form_state['values']['location']: $location;
   $location_default = $location_default != NULL ? $location_default : '';
@@ -140,12 +141,11 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#type' => 'fieldset',
       '#title' => 'Desk Statistics for ' . _get_locations()[$location],
       '#prefix' => '
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-7">
+        <div class="row-fluid">
+          <div class="span7">
           <div id="form-container">',
       '#suffix' => '</div></div>
-                <div class="key col-md-5">
+                <div class="key span5">
             <h2>Stats collector key:</h2>
             <dl>
               <dt>Quick information:</dt>
@@ -165,7 +165,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
               <dt>Inquiry Notes:</dt>
               <dd>Use to indicate information of interest to your unit.</dd>
             </dl>
-          </div></div></div>',
+          </div></div>',
     );
 
     if($location =='office') {
@@ -256,7 +256,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           ':input[name="patron"]' => array('value' => 'Student'),
         ),
       ),
-      '#prefix' => '<div class="student-type">',
+      '#prefix' => '<div class="student-type subgroup">',
       '#suffix' => '</div>',
     );
 
@@ -281,7 +281,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           ':input[name="patron"]' => array('value' => 'Faculty/Staff'),
         ),
       ),
-      '#prefix' => '<div class="staff-type">',
+      '#prefix' => '<div class="staff-type subgroup">',
       '#suffix' => '</div>',
     );
 
@@ -306,7 +306,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           ':input[name="patron"]' => array('value' => 'External User'),
         ),
       ),
-      '#prefix' => '<div class="external-type">',
+      '#prefix' => '<div class="external-type subgroup">',
       '#suffix' => '</div>',
     );
 
@@ -355,11 +355,20 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#title' => t('Override submission time?'),
     );
 
-    $form['stats_fieldset']['timestamp'] = array(
+    $form['stats_fieldset']['date-container'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array(
+          'row-fluid',
+        ),
+      ),
+    );
+
+    $form['stats_fieldset']['date-container']['date'] = array(
       '#type' => 'date_popup',
-      '#title' => t('Inquiry Time'),
+      '#title' => t('Inquiry Date'),
       '#title_display' => 'invisible',
-      '#date_format' => 'Y-m-d h:i A',
+      '#date_format' => 'Y-m-d',
       '#states' => array(
         'visible' => array(
           ':input[name="override"]' => array('checked' => true),
@@ -371,8 +380,36 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           ':input[name="override"]' => array('checked' => true),
         ),
       ),
-      '#element_validate' => array('_validate_timestamp'),
-      '#prefix' => '<div class="timestamp">',
+      '#element_validate' => array('_validate_date_time'),
+      '#prefix' => '<div class="date span6">',
+      '#suffix' => '</div>',
+    );
+
+    $time_options = array();
+    $time = getdate(strtotime(date('F j, Y', time()) . '00:00:00'));
+    do {
+      $option = date('g:i a', $time[0]);
+      $time_options[$option] = $option;
+      $time = getdate($time[0] + 1800);
+    } while (!($time['hours'] == 0 && $time['minutes'] == 0));
+
+    $form['stats_fieldset']['date-container']['time'] = array(
+      '#type' => 'select',
+      '#title' => t('Time'),
+      '#options' => $time_options,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+        'required' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+        'enabled' => array(
+          ':input[name="override"]' => array('checked' => true),
+        ),
+      ),
+      '#element_validate' => array('_validate_date_time'),
+      '#prefix' => '<div class="time span6">',
       '#suffix' => '</div>',
     );
 
@@ -470,11 +507,7 @@ function _stats_submit_callback($form, &$form_state) {
       'method' => $form['stats_fieldset']['method']['#default_value'] ? $form['stats_fieldset']['method']['#default_value'] : '',
       'referrals' => $form['stats_fieldset']['referrals']['#default_value'] ? $form['stats_fieldset']['referrals']['#default_value'] : '',
     );
-    $textfieldDefaults = array (
-      'timestamp[date]' => '',
-      'timestamp[time]' => '',
-    );
-    $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($radioDefaults), json_encode($textfieldDefaults)));
+    $commands[] = ajax_command_invoke(NULL, 'resetFields', array(json_encode($radioDefaults)));
 
   }
   $commands[] = ajax_command_invoke(NULL, 'fadeSuccess', array());
@@ -488,11 +521,17 @@ function _stats_submit_callback($form, &$form_state) {
  * Throws error if override time is selected and timestamp is empty.
  *
  */
-function _validate_timestamp($element, &$form_state, $form) {
-  $timestamp = $element['#value'];
+function _validate_date_time($element, &$form_state, $form) {
+  if ($element['#name'] == 'date') {
+    $value = $element['#value']['date'];
+  }
+  else {
+    $value = $element['#value'];
+  }
   $override = $form_state['values']['override'];
-  if ($override == 1 && ($timestamp['date'] == '' || $timestamp['time'] == '')) {
-    form_error($element, t('Please enter the inquiry date and time'));
+
+  if ($override == 1 && ($value == '')) {
+    form_error($element, t('Please enter the inquiry ' . $element['#name'] . '.'));
   }
 }
 

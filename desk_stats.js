@@ -54,7 +54,7 @@
 (function(jQuery) {
   jQuery.fn.fadeSuccess = function() {
     setTimeout(function() {
-      jQuery('.alert-success').fadeOut('slow');
+      jQuery('.alert-success').fadeOut(1000);
     },
     5000);
   };

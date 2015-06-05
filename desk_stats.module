@@ -141,10 +141,9 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#type' => 'fieldset',
       '#title' => 'Desk Statistics for ' . _get_locations()[$location],
       '#prefix' => '
-        <div class="row-fluid">
-          <div class="span7">
-          <div id="form-container">',
-      '#suffix' => '</div></div>
+          <div id="form-container" class="row-fluid">
+            <div class="span7">',
+      '#suffix' => '</div>
                 <div class="key span5">
             <h2>Stats collector key:</h2>
             <dl>
@@ -218,6 +217,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     $form['stats_fieldset']['inquiry_notes'] = array(
       '#type' => 'textfield',
       '#title' => t('Inquiry Notes'),
+      '#maxlength' => 256,
     );
 
     $patron_options = array(
@@ -348,6 +348,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           ':input[name="referrals"]' => array('value' => 'No referral'),
         ),
       ),
+      '#maxlength' => 256,
     );
 
     $form['stats_fieldset']['override'] = array(

@@ -1,7 +1,8 @@
 (function(jQuery) {
   jQuery.fn.setUpForm = function() {
     // find "Reference" named checkbox grouping and mark up accessibly
-    jQuery('input[name*="Reference"]').parents('div.form-type-checkbox').wrapAll('<fieldset class="subgroup"></div>');
+    var reference = jQuery('input[name*="Reference"]').parents('div.form-type-checkbox').toArray().reverse();
+    jQuery(reference).wrapAll('<fieldset class="subgroup"></div>');
     jQuery('input[name*="Reference"]').parents('fieldset.subgroup').prepend('<legend>Reference</legend>');
 
     // move student and faculty/staff types to beneath the appropriate radio button

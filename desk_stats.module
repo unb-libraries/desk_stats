@@ -44,8 +44,13 @@ function desk_stats_menu() {
 function _desk_stats_form_page() {
   drupal_add_js(drupal_get_path('module', 'desk_stats') . '/desk_stats.js');
   drupal_add_css(drupal_get_path('module', 'desk_stats') . '/desk_stats.css');
+
+  global $user;
+  $user_wrapper = entity_metadata_wrapper('user', user_load($user->uid));
+  $default_location = $user_wrapper->field_desk_stats_location->value();
+
   $variables = array(
-    'stats_form' => drupal_get_form('desk_stats_form'),
+    'stats_form' => drupal_get_form('desk_stats_form', $default_location),
   );
   $get = drupal_get_query_parameters($_GET);
   if (array_key_exists('location', $get) && array_key_exists($get['location'], _get_locations())) {
@@ -440,7 +445,6 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
   return $form;
 }
 
-
 /**
  * AJAX callback for desk_stats_form() when location is selected.
  *
@@ -486,8 +490,23 @@ function _save_location_callback($form, &$form_state) {
   }
   else {
     //save location
+    global $user;
+    $current_user = user_load($user->uid);
+    $edit = array(
+      'field_desk_stats_location' => array(
+        'und' => array(
+          0 => array(
+            'value' => $location,
+          ),
+        ),
+      ),
+    );
+    user_save($current_user, $edit);
     drupal_set_message('Your selection has been saved');
   }
+
+  $commands = desk_stats_refresh_messages();
+  return array('#type' => 'ajax', '#commands' => $commands);
 }
 
 /**
@@ -540,6 +559,25 @@ function _validate_date_time($element, &$form_state, $form) {
  * Clears previously displayed messages, displays new messages, and resets messages queue.
  */
 function _desk_stats_refresh_messages($commands = array()) {
+  $commands[] = ajax_command_remove('div#messages');
+  $commands[] = ajax_command_before('div.region-content', '<div id="messages"><div class="section clearfix">' . theme('status_messages') . "</div></div>");
+  return $commands;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function desk_stats_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'user_profile_form') {
+    unset($form['field_desk_stats_location']);
+  }
+}
+
+/**
+ * Clears previously displayed messages, displays new messages, and resets messages queue.
+ */
+function desk_stats_refresh_messages($commands = array()) {
   $commands[] = ajax_command_remove('div#messages');
   $commands[] = ajax_command_before('div.region-content', '<div id="messages"><div class="section clearfix">' . theme('status_messages') . "</div></div>");
   return $commands;

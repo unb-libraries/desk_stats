@@ -100,3 +100,8 @@
 .page-desk-stats #edit-date, .page-desk-stats #edit-date input, .page-desk-stats .container-inline-date .form-item {
   width: 100%;
 }
+
+.page-desk-stats fieldset.wrapper-expanded legend {
+  background-image: none;
+  background-color: #f5f5f5;
+}

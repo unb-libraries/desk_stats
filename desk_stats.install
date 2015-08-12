@@ -38,7 +38,7 @@ function desk_stats_schema() {
 				'default' => '',
 				'not null' => TRUE,
 				'description' => t('Notes'),
-			)
+			),
 			'patron' => array(
 				'type' => 'varchar',
 				'length' => '15',

@@ -523,13 +523,13 @@ function _stats_submit_callback($form, &$form_state) {
   }
 
   if( $form_state['values']['patron'] == 'Student' ) {
-    $patron_option = $form_state['values']['student_type'];
+    $patron_options = $form_state['values']['student_type'];
   }
   elseif( $form_state['values']['patron'] == 'Faculty/Staff' ) {
-    $patron_option = $form_state['values']['staff_type'];
+    $patron_options = $form_state['values']['staff_type'];
   }
   elseif( $form_state['values']['patron'] == 'External User' ) {
-    $patron_option = $form_state['values']['external_type'];
+    $patron_options = $form_state['values']['external_type'];
   }
 
   $override = $form_state['values']['override'];
@@ -547,23 +547,25 @@ function _stats_submit_callback($form, &$form_state) {
 
   $question_count = 0;
   foreach( $form_state['values']['inquiry'] as $inquiry ) {
-    $question_count++;
+    if( $inquiry ) {
+      $question_count++;
 
-    $data = array(
-      'time' => $submit_time,
-      'location' => $location,
-      'type' => $inquiry,
-      'count' => $question_count,
-      'inquiry_notes' => $form_state['values']['inquiry_notes'],
-      'patron' => $form_state['values']['patron'],
-      'patron_options' => $patron_options,
-      'method' => $form_state['values']['method'],
-      'referral' => $form_state['values']['referrals'],
-      'responder' => $form_state['values']['responder'],
-      'referral_details' => $form_state['values']['referral_details']
-    );
+      $data = array(
+        'timestamp' => $submit_time,
+        'location' => $form_state['values']['location'],
+        'inq_type' => $inquiry,
+        'inq_count' => $question_count,
+        'inquiry_notes' => $form_state['values']['inquiry_notes'],
+        'patron' => $form_state['values']['patron'],
+        'patron_options' => $patron_options,
+        'method' => $form_state['values']['method'],
+        'referral' => $form_state['values']['referrals'],
+        'responder' => $form_state['values']['responder'],
+        'referral_details' => $form_state['values']['referral_details']
+      );
 
-    drupal_write_record('desk_stats', $data);
+      drupal_write_record('desk_stats', $data);
+    }
   }
 
   if (!form_get_errors()) {

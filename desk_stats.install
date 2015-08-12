@@ -11,7 +11,7 @@ function desk_stats_schema() {
 				'not null' => TRUE,
 				'description' => t('Timestamp'),
 			),
-			'desk' => array(
+			'location' => array(
 				'type' => 'varchar',
 				'length' => '12',
 				'default' => '',
@@ -32,13 +32,13 @@ function desk_stats_schema() {
 				'default' => 1,
 				'description' => t('number of inquiry'),
 			),
-			'notes' => array(
+			'inquiry_notes' => array(
 				'type' => 'varchar',
 				'length' => '256',
 				'default' => '',
 				'not null' => TRUE,
 				'description' => t('Notes'),
-			)
+			),
 			'patron' => array(
 				'type' => 'varchar',
 				'length' => '15',
@@ -46,7 +46,7 @@ function desk_stats_schema() {
 				'not null' => TRUE,
 				'description' => t('Patron type'),
 			),
-			'patron_ext' => array(
+			'patron_options' => array(
 				'type' => 'varchar',
 				'length' => '20',
 				'default' => '',
@@ -74,17 +74,17 @@ function desk_stats_schema() {
 				'not null' => TRUE,
 				'description' => t('Whom responding'),
 			),
-			'referral_notes' => array(
+			'referral_details' => array(
 				'type' => 'varchar',
 				'length' => '256',
 				'default' => '',
 				'not null' => TRUE,
 				'description' => t('Details of referral'),
 			),
-		)
+		),
 		'indexes' => array(
 			'timestamp' => array('timestamp'),
-			'desk' => array('desk')
+			'location' => array('location')
 			),
 	);
 

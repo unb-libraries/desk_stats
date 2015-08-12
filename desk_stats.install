@@ -81,7 +81,7 @@ function desk_stats_schema() {
 				'not null' => TRUE,
 				'description' => t('Details of referral'),
 			),
-		)
+		),
 		'indexes' => array(
 			'timestamp' => array('timestamp'),
 			'desk' => array('desk')

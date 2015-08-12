@@ -1,0 +1,96 @@
+<?php
+
+# vim: set filetype=php expandtab tabstop=2 autoindent smartindent:
+
+function desk_stats_schema() {
+	$schema['desk_stats'] = array(
+		'description' => t('Tracks desk inquiries on hourly basis'),
+		'fields' => array(
+			'timestamp' => array(
+				'type' => 'datetime',
+				'not null' => TRUE,
+				'description' => t('Timestamp'),
+			),
+			'desk' => array(
+				'type' => 'varchar',
+				'length' => '12',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Abbreviated name of desk'),
+			),
+			'inq_type' => array(
+				'type' => 'varchar',
+				'length' => '25',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Type of inquiry'),
+			),
+			'inq_count' => array(
+				'type' => 'int',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+				'default' => 1,
+				'description' => t('number of inquiry'),
+			),
+			'notes' => array(
+				'type' => 'varchar',
+				'length' => '256',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Notes'),
+			)
+			'patron' => array(
+				'type' => 'varchar',
+				'length' => '15',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Patron type'),
+			),
+			'patron_ext' => array(
+				'type' => 'varchar',
+				'length' => '20',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Extension of patron type'),
+			),
+			'method' => array(
+				'type' => 'varchar',
+				'length' => '10',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Method of contact'),
+			),
+			'referral' => array(
+				'type' => 'varchar',
+				'length' => '21',
+				'default' => 'No referral',
+				'not null' => TRUE,
+				'description' => t('All, partially or not referred'),
+			),
+			'responder' => array(
+				'type' => 'varchar',
+				'length' => '25',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Whom responding'),
+			),
+			'referral_notes' => array(
+				'type' => 'varchar',
+				'length' => '256',
+				'default' => '',
+				'not null' => TRUE,
+				'description' => t('Details of referral'),
+			),
+		)
+		'indexes' => array(
+			'timestamp' => array('timestamp'),
+			'desk' => array('desk')
+			),
+	);
+
+	return $schema;
+}
+
+function desk_stats_install() {
+    drupal_install_schema('desk_stats');
+}

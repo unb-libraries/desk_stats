@@ -62,7 +62,7 @@ function desk_stats_schema() {
 			),
 			'referral' => array(
 				'type' => 'varchar',
-				'length' => '21',
+				'length' => '25',
 				'default' => 'No referral',
 				'not null' => TRUE,
 				'description' => t('All, partially or not referred'),

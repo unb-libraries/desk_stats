@@ -83,7 +83,7 @@ function desk_stats_schema() {
 			),
 		),
 		'indexes' => array(
-			'timestamp' => array('time_stamp'),
+			'timestamp' => array('timestamp'),
 			'location' => array('location')
 			),
 	);

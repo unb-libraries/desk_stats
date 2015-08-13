@@ -6,7 +6,7 @@ function desk_stats_schema() {
 	$schema['desk_stats'] = array(
 		'description' => t('Tracks desk inquiries on hourly basis'),
 		'fields' => array(
-			'timestamp' => array(
+			'time_stamp' => array(
 				'type' => 'datetime',
 				'not null' => TRUE,
 				'description' => t('Timestamp'),
@@ -83,7 +83,7 @@ function desk_stats_schema() {
 			),
 		),
 		'indexes' => array(
-			'timestamp' => array('timestamp'),
+			'time_stamp' => array('time_stamp'),
 			'location' => array('location')
 			),
 	);

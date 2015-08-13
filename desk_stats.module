@@ -374,6 +374,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       '#type' => 'date_popup',
       '#title' => t('Inquiry Date'),
       '#title_display' => 'invisible',
+      '#datepicker_options' => array('maxDate' => 0),
       '#date_format' => 'Y-m-d',
       '#states' => array(
         'visible' => array(

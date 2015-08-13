@@ -90,7 +90,3 @@ function desk_stats_schema() {
 
 	return $schema;
 }
-
-function desk_stats_install() {
-    drupal_install_schema('desk_stats');
-}

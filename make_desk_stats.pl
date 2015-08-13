@@ -22,7 +22,7 @@ $sql = "CREATE TABLE desk_stats (
   patron varchar(15) NOT NULL default '',
   patron_options varchar(20) NOT NULL default '',
   method varchar(10) NOT NULL default '',
-  referral varchar(21) NOT NULL default '',
+  referral varchar(25) NOT NULL default '',
   responder varchar(25) NOT NULL default '',
   referral_details varchar(256) NOT NULL default '',
   KEY (time_stamp),

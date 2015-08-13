@@ -54,6 +54,7 @@
 
 (function(jQuery) {
   jQuery.fn.fadeSuccess = function() {
+  jQuery('html, body').animate({scrollTop: 0}, 'slow');
     setTimeout(function() {
       jQuery('.alert-success').fadeOut(1000);
     },

@@ -14,7 +14,7 @@ $db = DBI->connect("DBI:mysql:$dbname","$dbuser","$dbpass");
 #$cmd->execute or die "SQL Error: $DBI::errstr\n";
 
 $sql = "CREATE TABLE desk_stats (
-  time_stamp datetime  NOT NULL,
+  timestamp datetime  NOT NULL,
   location varchar(12) NOT NULL default '',
   inq_type varchar(25) NOT NULL default '',
   inq_count int NOT NULL default '1',
@@ -25,7 +25,7 @@ $sql = "CREATE TABLE desk_stats (
   referral varchar(25) NOT NULL default '',
   responder varchar(25) NOT NULL default '',
   referral_details varchar(256) NOT NULL default '',
-  KEY (time_stamp),
+  KEY (timestamp),
   KEY (location)
 )";
 

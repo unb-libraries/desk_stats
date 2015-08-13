@@ -552,7 +552,7 @@ function _stats_submit_callback($form, &$form_state) {
       $question_count++;
 
       $data = array(
-        'time_stamp' => $submit_time,
+        'timestamp' => $submit_time,
         'location' => $form_state['values']['location'],
         'inq_type' => $inquiry,
         'inq_count' => $question_count,

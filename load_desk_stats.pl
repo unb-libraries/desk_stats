@@ -3,7 +3,7 @@
 use DBI;
 
 $dbhost = "localhost";
-$dbname = "drupal";
+$dbname = "stafflib";
 $dbuser = "root@localhost";
 $dbpass = "root";
 

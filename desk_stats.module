@@ -205,10 +205,10 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       'Directional' => 'Directional',
       'Technical & Systems' => 'Technical & Systems',
       'Administrative' => 'Administrative',
-      'Basic Reference' => 'Basic Reference',
-      'Complex Reference 5-15' => 'Complex Reference 5-15',
-      'Complex Reference 15+' => 'Complex Reference 15+',
-      'Expert Reference' => 'Expert Reference',
+      'Reference - Basic' => 'Reference - Basic',
+      'Reference - Complex 5-15' => 'Reference - Complex 5-15',
+      'Reference - Complex 15+' => 'Reference - Complex 15+',
+      'Reference - Expert' => 'Reference - Expert',
     );
     $form['stats_fieldset']['inquiry'] = array(
       '#type' => 'checkboxes',

@@ -589,6 +589,7 @@ function _stats_submit_callback($form, &$form_state) {
 
   }
   $commands[] = ajax_command_invoke(NULL, 'fadeSuccess', array());
+  $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
   $commands = array_merge($commands, _refresh_messages());
   return array('#type' => 'ajax', '#commands' => $commands);
 }

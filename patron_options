@@ -523,6 +523,7 @@ function _stats_submit_callback($form, &$form_state) {
     drupal_set_message('Desk Stats table does not exist','error');
   }
 
+  $patron_options = '';
   if( $form_state['values']['patron'] == 'Student' ) {
     $patron_options = $form_state['values']['student_type'];
   }

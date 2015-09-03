@@ -87,6 +87,7 @@ function _get_locations() {
     'govdocs' => 'Government Documents',
     'microforms' => 'Microforms',
     'hilref' => 'Reference (HIL)',
+    'hwk' => 'HWK Commons',
     'roamingref' => 'Roaming Reference (HIL)',
     'sci' => 'Science and Forestry',
     'office' => 'Office',

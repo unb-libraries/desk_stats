@@ -190,6 +190,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
         'Diane Buhay' => 'Diane Buhay',
         'Angela Extell' => 'Angela Extell',
         'Deborah Eves' => 'Deborah Eves',
+        'Phil Taber' => 'Phil Taber',
       );
       $form['stats_fieldset']['responder'] = array(
         '#type' => 'select',

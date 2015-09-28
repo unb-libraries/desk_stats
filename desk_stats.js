@@ -70,6 +70,14 @@
   };
 })(jQuery);
 
+(function(jQuery) {
+  jQuery.fn.refreshStats = function(location) {
+    jQuery.get('desk-stats-ajax-stats/' + location, function(data) {
+        jQuery('#stats').html(data);
+    }, 'html');
+  };
+})(jQuery);
+
 jQuery(document).ready(function() {
   jQuery.fn.setUpForm();
 });

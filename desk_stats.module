@@ -678,7 +678,7 @@ function desk_stats_ajax_get_stats($location) {
   $later = new DateTime('tomorrow');
   $tomorrow = date_format($later, "Y-m-d H:i:s");
   $past = new DateTime('yesterday');
-  $yesterday = date_format($past, "Y-m-d H:i:s");
+  $yesterday = date_format($past, "Y-m-d 23:59:59");
   $today_result = array();
   $today_result = db_query("SELECT count(*) FROM desk_stats WHERE location = :location AND (timestamp > :yesterday AND timestamp < :tomorrow)", array(':location' => $location, ':yesterday' => $yesterday, ':tomorrow' => $tomorrow));
   foreach( $today_result->fetchCol(0) as $x ) {
@@ -695,7 +695,7 @@ function desk_stats_ajax_get_stats($location) {
     $two_hour_count = $x;
   }
 
-#  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br><br>';
+  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br><br>';
 
   return $stats_markup;
 }

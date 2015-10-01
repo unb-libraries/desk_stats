@@ -159,7 +159,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
           <div class="key span5">
             <div id="stats">
             </div>
-            <h2>Stats collector key:</h2>
+            <h2>Stats Collector Key</h2>
             <dl>
               <dt>Quick information:</dt>
               <dd>Simple and specific questions, typically answered without using reference tools.</dd>
@@ -695,7 +695,7 @@ function desk_stats_ajax_get_stats($location) {
     $two_hour_count = $x;
   }
 
-  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br><br>';
+  $stats_markup = '<h2>Location Stats</h2><table><tr><th>Inquiries today:</th><td>' . $today_count . '</td></tr><tr><th>Last 2 hours:</th><td>' . $two_hour_count . '</td></tr></table>';
 
   return $stats_markup;
 }

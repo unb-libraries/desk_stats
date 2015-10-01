@@ -105,3 +105,22 @@
   background-image: none;
   background-color: #f5f5f5;
 }
+
+.page-desk-stats #stats {
+  margin: -10px -10px 35px; 
+  padding: 10px 10px 14px; 
+  background: #EAE59E;
+}
+
+.page-desk-stats #stats table {
+  font-weight: bold;
+}
+
+.page-desk-stats #stats th, #stats td {
+  text-align: left;
+  padding:5px;
+} 
+
+.page-desk-stats #stats th {
+  width: 35%
+}

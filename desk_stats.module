@@ -695,7 +695,7 @@ function desk_stats_ajax_get_stats($location) {
     $two_hour_count = $x;
   }
 
-  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br>';
+#  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br><br>';
 
   return $stats_markup;
 }

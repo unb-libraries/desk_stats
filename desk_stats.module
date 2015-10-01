@@ -487,6 +487,7 @@ function _location_select_callback($form, &$form_state) {
   }
 
   $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
+  $commands[] = ajax_command_invoke(NULL, 'refreshStats', array($form_state['values']['location']));
 
   return array('#type' => 'ajax', '#commands' => $commands);
 }
@@ -673,8 +674,29 @@ function desk_stats_refresh_messages($commands = array()) {
  */
 function desk_stats_ajax_get_stats($location) {
   $stats_markup = '';
-  // Use the $location variable to pull in whatever stats you need and build html output
-  // The html returned below will be injected into the #stats div in the sidebar
+  
+  $later = new DateTime('tomorrow');
+  $tomorrow = date_format($later, "Y-m-d H:i:s");
+  $past = new DateTime('yesterday');
+  $yesterday = date_format($past, "Y-m-d H:i:s");
+  $today_result = array();
+  $today_result = db_query("SELECT count(*) FROM desk_stats WHERE location = :location AND (timestamp > :yesterday AND timestamp < :tomorrow)", array(':location' => $location, ':yesterday' => $yesterday, ':tomorrow' => $tomorrow));
+  foreach( $today_result->fetchCol(0) as $x ) {
+    $today_count = $x;
+  }
+
+  $today = date_create();
+  $now = date_format($today, "Y-m-d H:i:s");
+  $ago = $today->modify('-2 hour');
+  $two_hours_ago = date_format($ago, "Y-m-d H:i:s");
+  $two_hour_result = array();
+  $two_hour_result = db_query("SELECT count(*) FROM desk_stats WHERE location = :location AND (timestamp > :two_hours_ago AND timestamp < :now)", array(':location' => $location, ':two_hours_ago' => $two_hours_ago, ':now' => $now));
+  foreach( $two_hour_result->fetchCol(0) as $x ) {
+    $two_hour_count = $x;
+  }
+
+  $stats_markup = '<b>Inquiries today: ' . $today_count . '<br>Last 2 hours: ' . $two_hour_count . '</b><br>';
+
   return $stats_markup;
 }
 

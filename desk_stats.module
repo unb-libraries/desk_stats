@@ -157,8 +157,8 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
             <div class="span7">',
       '#suffix' => '</div>
           <div class="key span5">
-            <div id="stats">
-            </div>
+            <div id="stats">' . desk_stats_ajax_get_stats($location) .
+            '</div>
             <h2>Stats Collector Key</h2>
             <dl>
               <dt>Quick information:</dt>

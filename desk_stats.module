@@ -690,7 +690,7 @@ function desk_stats_ajax_get_stats($location) {
   $ago = $today->modify('-2 hour -2 sec');
   $two_hours_ago = date_format($ago, "Y-m-d H:i:s");
   $two_hour_result = array();
-  $two_hour_result = db_query("SELECT count(*) FROM desk_stats WHERE location = :location AND (timestamp > :two_hours_ago AND timestamp < :now)", array(':location' => $location, ':two_hours_ago' => $two_hours_ago, ':now' => $now));
+  $two_hour_result = db_query("SELECT count(*) FROM desk_stats WHERE location = :location AND (timestamp > :two_hours_ago AND timestamp <= :now)", array(':location' => $location, ':two_hours_ago' => $two_hours_ago, ':now' => $now));
   foreach( $two_hour_result->fetchCol(0) as $x ) {
     $two_hour_count = $x;
   }

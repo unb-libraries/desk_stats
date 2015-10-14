@@ -695,7 +695,7 @@ function desk_stats_ajax_get_stats($location) {
     $two_hour_count = $x;
   }
 
-  $stats_markup = '<h2>Location Stats</h2><table><tr><th>Inquiries today</th><td>' . $today_count . '</td></tr><tr><th>Last 2 hours</th><td>' . $two_hour_count . '</td></tr></table>';
+  $stats_markup = '<h2>Location Stats</h2><table><tr><th>Inquiries today</th><td>' . $today_count . '</td></tr><tr><th>Last 2 hours</th><td>' . $two_hour_count . '</td></tr></table>' .'<p style="margin-top:.5em"><small>Numbers indicate total inquiries NOT patrons.</small></p>';
 
   return $stats_markup;
 }

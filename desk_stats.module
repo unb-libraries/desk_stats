@@ -468,7 +468,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
  */
 function _location_select_callback($form, &$form_state) {
   $location = $form_state['values']['location'];
-  $commands = _refresh_messages();
+  $commands = desk_stats_refresh_messages();
 
   if (array_key_exists($location, _get_locations())) {
     $new_form_render = drupal_render($form['stats_fieldset']);
@@ -608,7 +608,7 @@ function _stats_submit_callback($form, &$form_state) {
   $commands[] = ajax_command_invoke(NULL, 'fadeSuccess', array());
   $commands[] = ajax_command_invoke(NULL, 'setUpForm', array());
   $commands[] = ajax_command_invoke(NULL, 'refreshStats', array($form_state['values']['location']));
-  $commands = array_merge($commands, _refresh_messages());
+  $commands = array_merge($commands, desk_stats_refresh_messages());
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
@@ -713,7 +713,7 @@ function desk_stats_ajax_callback($page_callback_result) {
 /**
  * Clears previously displayed messages, displays new messages, and resets messages queue.
  */
-function _refresh_messages($commands = array()) {
+function _desk_stats_refresh_messages($commands = array()) {
   $commands[] = ajax_command_remove('div#messages');
   $commands[] = ajax_command_before('div.region-content', '<div id="messages"><div class="section clearfix">' . theme('status_messages') . "</div></div>");
   return $commands;

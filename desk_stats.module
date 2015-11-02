@@ -709,12 +709,3 @@ function desk_stats_ajax_get_stats($location) {
 function desk_stats_ajax_callback($page_callback_result) {
   print $page_callback_result;
 }
-
-/**
- * Clears previously displayed messages, displays new messages, and resets messages queue.
- */
-function _desk_stats_refresh_messages($commands = array()) {
-  $commands[] = ajax_command_remove('div#messages');
-  $commands[] = ajax_command_before('div.region-content', '<div id="messages"><div class="section clearfix">' . theme('status_messages') . "</div></div>");
-  return $commands;
-}

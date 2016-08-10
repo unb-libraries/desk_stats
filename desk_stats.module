@@ -94,6 +94,7 @@ function _get_locations() {
     'microforms' => 'Microforms',
     'hilref' => 'Reference (HIL)',
     'hilaccess' => 'Access Services (HIL)',
+    'hilstacks' => 'HIL Stacks',
     'hwk' => 'HWK Commons',
     'roamingref' => 'Roaming Reference (HIL)',
     'sci' => 'Science and Forestry',
@@ -201,6 +202,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
         'Angela Extell' => 'Angela Extell',
         'Deborah Eves' => 'Deborah Eves',
         'Phil Taber' => 'Phil Taber',
+        'Grace Martin' => 'Grace Martin',
       );
       $form['stats_fieldset']['responder'] = array(
         '#type' => 'select',

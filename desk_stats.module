@@ -205,6 +205,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
         'Grace Martin' => 'Grace Martin',
         'Alex Goudreau' => 'Alex Goudreau',
         'Sally Armstrong' => 'Sally Armstrong',
+        'Erik Moore' => 'Erik Moore',
       );
       asort($responder_options);
 

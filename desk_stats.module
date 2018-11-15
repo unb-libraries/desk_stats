@@ -191,21 +191,19 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
         'Richelle Witherspoon' => 'Richelle Witherspoon',
         'Aggie Sliwka' => 'Aggie Sliwka',
         'Alicia Mclaughlin' => 'Alicia Mclaughlin',
-        'Patricia Simmons' => 'Patricia Simmons',
         'Linda Roulston' => 'Linda Roulston',
         'Joanne Smyth' => 'Joanne Smyth',
         'Leanne Wells' => 'Leanne Wells',
         'Ann Bridges' => 'Ann Bridges',
         'David Ross' => 'David Ross',
-        'Linda Hansen' => 'Linda Hansen',
-        'Diane Buhay' => 'Diane Buhay',
         'Angela Extell' => 'Angela Extell',
-        'Deborah Eves' => 'Deborah Eves',
         'Phil Taber' => 'Phil Taber',
         'Grace Martin' => 'Grace Martin',
         'Alex Goudreau' => 'Alex Goudreau',
         'Sally Armstrong' => 'Sally Armstrong',
         'Erik Moore' => 'Erik Moore',
+        'Tatiana Zaraiskaya' => 'Tatiana Zaraiskaya',
+        'Mike Nason' => 'Mike Nason',
       );
       asort($responder_options);
 

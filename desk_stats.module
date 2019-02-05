@@ -177,6 +177,13 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
               <dd>In-depth inquiries, requiring more time and perhaps teaching patrons how to use library resources. Indicate whether the transaction took more or fewer than  15 minutes.</dd>
               <dt>Expert Reference:</dt>
               <dd>Highly specific or challenging questions, usually answered by a liaison librarian or subject specialist.</dd>
+              <dt>Consultation:</dt>
+              <dd>Support for researchers, graduate students, professors, etc., requiring substantial preparation on the part of the liaison librarian, archivist, or functional specialist.
+                These may be creating systematic reviews, tracking down historical publications, creating bibliographies, or other activities. Consultations are significant contributions to
+                researchers\' work, and likely entail more than one communication with the researcher.  Consultation stats are only entered once per researcher/research topic.</dd>
+              <dt>Instruction:</dt>
+              <dd>One-on-one sessions with a liaison librarian required as part the work for a specific course, and arranged in tandem with a faculty member.
+                Instruction statistics should include tracking information about the course and level.</dd>
               <dt>Inquiry Notes:</dt>
               <dd>Use to indicate information of interest to your unit.</dd>
             </dl>
@@ -231,6 +238,8 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
       'Reference - Complex 5-15' => 'Reference - Complex 5-15',
       'Reference - Complex 15+' => 'Reference - Complex 15+',
       'Reference - Expert' => 'Reference - Expert',
+      'Consultation' => 'Consultation',
+      'Instruction' => 'Instruction',
     );
     $form['stats_fieldset']['inquiry'] = array(
       '#type' => 'checkboxes',

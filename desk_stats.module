@@ -378,6 +378,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     $form['stats_fieldset']['referral_details'] = array(
       '#type' => 'textfield',
       '#title' => t('Referral Details'),
+      '#description' => t('Max 256 characters'),
       '#states' => array(
         'invisible' => array(
           ':input[name="referrals"]' => array('value' => 'No referral'),

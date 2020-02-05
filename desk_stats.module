@@ -254,6 +254,7 @@ function desk_stats_form($form, &$form_state, $location = NULL) {
     $form['stats_fieldset']['inquiry_notes'] = array(
       '#type' => 'textfield',
       '#title' => t('Inquiry Notes'),
+      '#description' => t('Max 256 characters'),
       '#maxlength' => 256,
     );
 

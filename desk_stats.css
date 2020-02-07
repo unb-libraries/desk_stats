@@ -42,6 +42,11 @@
   display: inline-block;
 }
 
+.form-item-inquiry-notes .description,
+.form-item-referral-details .description {
+  color: #aa0404 !important;
+}
+
 .page-desk-stats select#edit-location {
   display: inline-block;
 }
